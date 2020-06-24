@@ -37,7 +37,7 @@ Follow each following steps :
 
 *   First clone this repository from your terminal in your preferred project directory.
 
-```
+```console
 https://github.com/WizBhoo/OCR_P08_ToDoList.git
 ```
 
@@ -46,7 +46,7 @@ https://github.com/WizBhoo/OCR_P08_ToDoList.git
 *   Launch your local environment.
 *   From your terminal, go to the project directory and tape those command line :
 
-```
+```console
 composer install
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
@@ -69,7 +69,7 @@ Once you have well installed my Docker Stack, follow each following steps :
 *   From your terminal go to the symfony directory created by Docker.
 *   Clone this repository inside.
 
-```
+```console
 https://github.com/WizBhoo/OCR_P08_ToDoList.git
 ```
 
@@ -77,7 +77,7 @@ https://github.com/WizBhoo/OCR_P08_ToDoList.git
 *   I recommend you to copy the ".env" file and setup your credentials in a ".env.local" file.
 *   From your terminal go to the Docker directory and launch Docker using those command lines :
 
-```
+```console
 make build
 make start or make up
 ```
@@ -89,7 +89,7 @@ You can also use "make help" to see what "make" command are available.
 *   You can access to PHPMyAdmin using [pma.localhost](http://pma.localhost) but as already mentioned, you will create the DB and load data fixtures through command lines with Doctrine (See next steps).
 *   From your terminal, always in the Docker directory, tape those command lines :
 
-```
+```console
 make sh
 cd symfony/
 composer install

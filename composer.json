@@ -2,6 +2,7 @@
     "name": "saro0h/to-do-list",
     "license": "proprietary",
     "type": "project",
+    "description": "upgrade an existing project",
     "autoload": {
         "psr-4": {
             "App\\": "src/"

@@ -7,12 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Entity Class Figure.
+ *
  * @ORM\Entity
  * @ORM\Table
  */
 class Task
 {
     /**
+     * @var int
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -35,28 +39,40 @@ class Task
     private $createdAt;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Vous devez saisir un titre.")
      */
     private $title;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="text")
      * @Assert\NotBlank(message="Vous devez saisir du contenu.")
      */
     private $content;
 
     /**
+     * @var bool
+     *
      * @ORM\Column(type="boolean")
      */
     private $isDone;
 
+    /**
+     * Task constructor.
+     */
     public function __construct()
     {
         $this->isDone = false;
     }
 
-    public function getId()
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -101,32 +117,60 @@ class Task
         return $this;
     }
 
-    public function getTitle()
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function setTitle($title)
+    /**
+     * @param string $title
+     *
+     * @return $this
+     */
+    public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
-    public function getContent()
+    /**
+     * @return string|null
+     */
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
-    public function setContent($content)
+    /**
+     * @param string $content
+     *
+     * @return $this
+     */
+    public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
     }
 
-    public function isDone()
+    /**
+     * @return bool
+     */
+    public function isDone(): bool
     {
         return $this->isDone;
     }
 
-    public function toggle($flag)
+    /**
+     * @param bool $flag
+     *
+     * @return void
+     */
+    public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
     }

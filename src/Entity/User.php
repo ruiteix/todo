@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * (c) Adrien PIERRARD
+ */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
+ * Entity Class User.
+ *
  * @ORM\Table("user")
  * @ORM\Entity
  * @UniqueEntity(fields={"email"}, message="This email already exists")
@@ -17,6 +23,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class User implements UserInterface
 {
     /**
+     * @var int
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,20 +32,30 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=25, unique=true)
+     *
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      */
     private $username;
 
     /**
+     * @var string The hashed password
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $password;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=60, unique=true)
+     *
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
-     * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
+     * @Assert\Email(
+     *     message="Le format de l'adresse n'est pas correcte."
+     * )
      */
     private $email;
 
@@ -63,39 +81,74 @@ class User implements UserInterface
         $this->tasks = new ArrayCollection();
     }
 
-    public function getId()
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername()
+    /**
+     * The visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function setUsername($username)
+    /**
+     * @param string $username
+     *
+     * @return $this
+     */
+    public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
     }
 
-    public function getPassword()
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword($password)
+    /**
+     * @param string $password
+     *
+     * @return $this
+     */
+    public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
     }
 
-    public function getEmail()
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail($email)
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
+    public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -163,11 +216,17 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function getSalt()
     {
         return null;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials()
     {
     }

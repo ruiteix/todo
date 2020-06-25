@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -13,13 +14,23 @@ class Task
 {
     /**
      * @ORM\Column(type="integer")
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $author;
+
+    /**
+     * @var DateTimeInterface
+     *
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
     private $createdAt;
 
@@ -42,7 +53,6 @@ class Task
 
     public function __construct()
     {
-        $this->createdAt = new \Datetime();
         $this->isDone = false;
     }
 
@@ -51,14 +61,44 @@ class Task
         return $this->id;
     }
 
-    public function getCreatedAt()
+    /**
+     * @return User|null
+     */
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
+    public function setAuthor(?User $user): self
+    {
+        $this->author = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt($createdAt)
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     public function getTitle()

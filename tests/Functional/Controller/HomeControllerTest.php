@@ -1,12 +1,24 @@
 <?php
 
+/**
+ * (c) Adrien PIERRARD
+ */
+
 namespace App\Tests\Functional\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+/**
+ * Class HomeControllerTest.
+ */
+class HomeControllerTest extends WebTestCase
 {
-    public function testIndex()
+    /**
+     * Home page test.
+     *
+     * @return void
+     */
+    public function testIndex(): void
     {
         $this->markTestIncomplete(
             'This test has not been implemented yet.'

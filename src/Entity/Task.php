@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * (c) Adrien PIERRARD
+ */
+
 namespace App\Entity;
 
 use DateTimeInterface;

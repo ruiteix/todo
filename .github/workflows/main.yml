@@ -2,13 +2,12 @@ name: Main
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     services:
       # https://docs.docker.com/samples/library/mysql/
@@ -21,48 +20,37 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Shutdown Ubuntu MySQL (SUDO)
-      run: sudo service mysql stop
+      - uses: actions/checkout@v2
 
-    - uses: mirromutth/mysql-action@v1.1
-      with:
-        mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
-        mysql database: 'todotest' # Optional, default value is "test". The specified database which will be create
-        mysql root password: 'root'
-        mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-        mysql password: 'root'
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - uses: actions/checkout@v2
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
-      
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
+      - name: Fixtures loader
+        run: bin/console d:d:c -n && bin/console d:m:m -n && bin/console d:f:l -n
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-    - name: Fixtures loader
-      run: bin/console d:d:c -n && bin/console d:m:m -n && bin/console d:f:l -n
+      - name: Run unit test suite
+        run: bin/phpunit --coverage-clover coverage-xml/index.xml
 
-    - name: Run unit test suite
-      run: bin/phpunit --coverage-clover coverage-xml/index.xml
+      - name: codacy-coverage-reporter
+        uses: actions/checkout@master
 
-    - name: codacy-coverage-reporter
-      uses: actions/checkout@master
-
-    - name: Run codacy-coverage-reporter
-      uses: codacy/codacy-coverage-reporter-action@master
-      with:
-        project-token: 2338ad56bc0740fcb44c600c9d934c58
-        coverage-reports: index.xml
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+          project-token: 2338ad56bc0740fcb44c600c9d934c58
+          coverage-reports: index.xml

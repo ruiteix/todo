@@ -12,6 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Shutdown Ubuntu MySQL (SUDO)
+      run: sudo service mysql stop
+
+    - uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+        mysql database: 'todotest' # Optional, default value is "test". The specified database which will be create
+        mysql root password: 'root'
+        mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+        mysql password: 'root'
+
     - uses: actions/checkout@v2
 
     - name: Validate composer.json and composer.lock
@@ -32,6 +43,17 @@ jobs:
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
+    - name: Fixtures loader
+      run: bin/console d:d:c -n && bin/console d:m:m -n && bin/console d:f:l -n
 
     - name: Run unit test suite
-      run: bin/phpunit
+      run: bin/phpunit --coverage-clover coverage-xml/index.xml
+
+    - name: codacy-coverage-reporter
+      uses: actions/checkout@master
+
+    - name: Run codacy-coverage-reporter
+      uses: codacy/codacy-coverage-reporter-action@master
+      with:
+        project-token: 2338ad56bc0740fcb44c600c9d934c58
+        coverage-reports: index.xml

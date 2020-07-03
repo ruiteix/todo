@@ -47,7 +47,7 @@ jobs:
       # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
       # Docs: https://getcomposer.org/doc/articles/scripts.md
       - name: Fixtures loader
-        run: bin/console d:d:c -n && bin/console d:m:m -n && bin/console d:f:l -n
+        run: bin/console d:m:m -n && bin/console d:f:l -n
 
       - name: Run unit test suite
         run: bin/phpunit --coverage-clover coverage-xml/index.xml

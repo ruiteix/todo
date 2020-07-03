@@ -15,7 +15,7 @@ jobs:
     services:
       # https://docs.docker.com/samples/library/mysql/
       mysql:
-        image: mysql:5.7
+        image: mysql:8
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -48,12 +48,3 @@ jobs:
 
       - name: Run unit test suite
         run: bin/phpunit --coverage-clover coverage-xml/index.xml
-
-      - name: codacy-coverage-reporter
-        uses: actions/checkout@master
-
-      - name: Run codacy-coverage-reporter
-        uses: codacy/codacy-coverage-reporter-action@master
-        with:
-          project-token: 2338ad56bc0740fcb44c600c9d934c58
-          coverage-reports: index.xml

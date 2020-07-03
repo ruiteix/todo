@@ -17,10 +17,7 @@ jobs:
         image: mysql:8
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: bilemo
-          MYSQL_USER: bilemo
-          MYSQL_PASSWORD: bilemo
-          MYSQL_ROOT_HOST: "%"
+          MYSQL_DATABASE: todo
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3

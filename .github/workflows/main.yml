@@ -35,6 +35,3 @@ jobs:
 
     - name: Run unit test suite
       run: bin/phpunit
-    
-    #- name: Run functional test suite
-    #  run: vendor/bin/behat
